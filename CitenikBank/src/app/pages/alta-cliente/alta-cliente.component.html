@@ -1,0 +1,165 @@
+<div class="container-fluid">
+    <div class="abs-center">
+        <div class="row mx-auto p-2">
+
+            <!-- Logo de Citenik Bank -->
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                <a href="/home"><img src="./assets/CitenikBank-logo.png" alt="Logo Citenik"></a>
+            </div>
+
+            <!-- Sección de Registro de clientes -->
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                <h3 class="text-white">Registrar cliente</h3>
+                <div class="card">
+                    <div class="card-body">
+                        <form [formGroup]="formRegistro" (submit)="formRegistro.reset()" class="row">
+
+                            <!-- Campo Nombre -->
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="form-outline input-group mb-3">
+                                    <span class="input-group-text">Nombre</span>
+                                    <input type="text" class="form-control" value="Nombre" formControlName="nombre" (change)="esClienteGuardar()"
+                                        required />
+                                    <span class="input-group-text" title="{{caracteresValidos}}"><svg
+                                            xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16">
+                                            <path
+                                                d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                            <path
+                                                d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
+                                        </svg>
+                                    </span>
+                                </div>
+
+                                <!-- Validaciones Nombre -->
+                                <div *ngIf="nombre?.invalid && (nombre?.dirty || nombre?.touched)" class="text-danger">
+                                    <div *ngIf="nombre?.errors?.['required']">
+                                        El Nombre es requerido.
+                                    </div>
+                                    <div *ngIf="nombre?.errors?.['pattern']">
+                                        La primera letra debe ser mayúscula y no debe contener números ni caracteres especiales.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Campo Apellido -->
+                            <div class="col-md-12">
+                                <div class="form-outline input-group mb-3">
+                                    <span class="input-group-text">Apellido</span>
+                                    <input type="text" class="form-control" value="Apellido" formControlName="apellido" (change)="esClienteGuardar()"
+                                        required />
+                                    <span class="input-group-text" title="{{caracteresValidos}}"><svg
+                                            xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16">
+                                            <path
+                                                d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                            <path
+                                                d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
+                                        </svg>
+                                    </span>
+                                </div>
+
+                                <!-- Validaciones Apellido -->
+                                <div *ngIf="apellido?.invalid && (apellido?.dirty || apellido?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="apellido?.errors?.['required']">
+                                        El Apellido es requerido.
+                                    </div>
+                                    <div *ngIf="apellido?.errors?.['pattern']">
+                                        La primera letra debe ser mayúscula y no debe contener números ni caracteres especiales.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Campo CUIT -->
+                            <div class="col-md-12">
+                                <div class="form-outline input-group mb-3">
+                                    <span class="input-group-text">CUIT</span>
+                                    <input name="CUIT" type="text" id="CUIT" class="form-control"
+                                        placeholder="__-________-_" [textMask]="{mask: mascaraCUIT}"
+                                        formControlName="CUIT" maxlength="14" (change)="esClienteGuardar()">
+                                </div>
+
+                                <!-- Validaciones CUIT -->
+                                <div *ngIf="CUIT?.invalid && (CUIT?.dirty || CUIT?.touched)" class="text-danger">
+                                    <div *ngIf="CUIT?.errors?.['required']">
+                                        El CUIT es requerido.
+                                    </div>
+                                    <div *ngIf="CUIT?.errors?.['pattern']">
+                                        El formato del CUIT no es válido.
+                                    </div>
+                                </div>
+                                <div class="text-danger mb-4" *ngIf="esCUITValido == false">
+                                    El CUIT ingresado no es un CUIT existente.
+                                </div>
+                            </div>
+
+                            <!-- Campo Fecha Nacimiento -->
+
+                            <div class="col-md-12">
+                                <div class="form-outline input-group mb-2" id="datepicker">
+                                    <span class="input-group-text">Fecha Nacimiento</span>
+                                    <input type="date" id="date" class="form-control"
+                                        formControlName="fecha_nacimiento" (change)="esClienteGuardar()">
+                                </div>
+
+                                <!-- Validaciones Fecha Nacimiento -->
+                                <div *ngIf="fecha_nacimiento?.invalid && (fecha_nacimiento?.dirty || fecha_nacimiento?.touched)"
+                                    class="text-danger">
+                                    <div class="mb-4" *ngIf="fecha_nacimiento?.errors?.['required']">
+                                        La Fecha de Nacimiento es requerida.
+                                    </div>
+                                </div>
+                                <div class="text-danger mb-4" *ngIf="esMayor(fecha_nacimiento?.value) == false">
+                                    La Fecha de Nacimiento no puede ser mayor que la fecha actual.
+                                </div>
+                            </div>
+                            <div class="col-4"></div>
+                            <div class="col-3">
+                                <button class="btn btn-danger" type="submit">Cancelar</button>
+                            </div>
+                            <div class="col-4">
+                                <button class="btn text-white" style="background-color: #0e3c53;" type="button"
+                                    *ngIf="esCUITCUILValido() && esMayor(fecha_nacimiento?.value) == true" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                                    (click)="datosModalGuardar();" (change)="esClienteGuardar()">Guardar
+                                </button>
+                                <!-- Sección de Confirmación de usuario -->
+                                <div *ngIf="existeCliente.length == 0">
+                                    <app-modal [titulo]="'Nuevo Cliente'">
+                                        <h5>Desea registrar el cliente: </h5>
+                                        <h6 class="colorLetra">Nombre y Apellido: {{nombreCompleto}}
+                                            <br>
+                                            CUIT: {{CUITRegistrado}}
+                                            <br>
+                                            Fecha Nacimiento: {{fechaRegistrado | date: "dd/MM/yyyy" }}
+                                        </h6>
+                                        <div class="modal-footer text-center">
+                                            <button style="background-color: #0e3c53;" type="submit"
+                                                class="btn text-white" data-bs-toggle="button" data-bs-dismiss="modal"
+                                                (click)="confirmarCliente()">Confirmar
+                                            </button>
+                                        </div>
+                                    </app-modal>
+                                </div>
+                                <div *ngIf="existeCliente.length > 0">
+                                    <app-modal [titulo]="'Aviso'">
+                                        <h6 class="colorLetra">
+                                            El cliente con CUIT: {{CUITRegistrado}} ya existe.
+                                            <br>
+                                            Por favor, ingrese otro CUIT válido.
+                                        </h6>
+                                        <div class="modal-footer text-center">
+                                            <button style="background-color: #0e3c53;" type="submit"
+                                                class="btn text-white" data-bs-toggle="button"
+                                                data-bs-dismiss="modal">Volver</button>
+                                        </div>
+                                    </app-modal>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

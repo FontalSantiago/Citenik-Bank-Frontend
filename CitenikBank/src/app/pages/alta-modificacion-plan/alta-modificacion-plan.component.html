@@ -1,0 +1,677 @@
+<div class="container-fluid">
+  <div class="abs-center">
+    <div class="row mx-auto p-2">
+
+      <!-- Logo de Citenik Bank -->
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+        <a href="/home"><img src="./assets/CitenikBank-logo.png" alt="Logo Citenik" /></a>
+      </div>
+
+      <!-- Sección de Registro de planes -->
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6" *ngIf="modoFormulario=='A'">
+        <h3 class="text-white">Registrar plan</h3>
+        <div class="card">
+          <div class="card-body">
+            <form [formGroup]="formRegistro" (submit)="formRegistro.reset()" class="row">
+
+              <!-- Campo Nombre -->
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <div class="form-outline input-group mb-3">
+                  <span class="input-group-text">Nombre</span>
+                  <input type="text" class="form-control" formControlName="nombre" required
+                    (change)="esPlanGuardar()" />
+                  <span class="input-group-text" title="{{caracteresValidos}}"><svg xmlns="http://www.w3.org/2000/svg"
+                      width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                      <path
+                        d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
+                    </svg>
+                  </span>
+                </div>
+
+                <!-- Validaciones Nombre -->
+                <div *ngIf="nombre?.invalid && (nombre?.dirty || nombre?.touched)" class="text-danger">
+                  <div *ngIf="nombre?.errors?.['required']">
+                    El Nombre es requerido
+                  </div>
+                  <div *ngIf="nombre?.errors?.['pattern']">
+                    La primera letra debe ser mayúscula y no debe contener números ni caracteres especiales.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Campo TNA -->
+              <div class="col-md-12">
+                <div class="form-outline input-group mb-3">
+                  <span class="input-group-text">TNA</span>
+                  <input type="text" min="0" maxlength="6" oninput="validity.valid||(value='');" class="form-control"
+                    formControlName="TNA" required (change)="esPlanGuardar()" />
+                  <span class="input-group-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-percent" viewBox="0 0 16 16">
+                      <path
+                        d="M13.442 2.558a.625.625 0 0 1 0 .884l-10 10a.625.625 0 1 1-.884-.884l10-10a.625.625 0 0 1 .884 0zM4.5 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm7 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
+                    </svg>
+                  </span>
+                </div>
+
+                <!-- Validaciones TNA -->
+                <div *ngIf="TNA?.invalid && (TNA?.dirty || TNA?.touched)" class="text-danger">
+                  <div *ngIf="TNA?.errors?.['required']">
+                    La TNA es requerida
+                  </div>
+                  <div *ngIf="TNA?.errors?.['pattern']">
+                    Solo se permiten números.
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Campo Cuotas -->
+              <div class="col-md-12">
+                <div class="form-outline">
+                  <div class="row">
+                    <div class="col-12">
+                      Cuotas
+                    </div>
+                    <div class="col-sm-12 mb-3 mb-sm-0">
+                      <div class="card">
+                        <div class="card-body row">
+
+                          <!-- Campo Cuotas Mínimas -->
+                          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2">
+                            <div class="col-3 input-group">
+                              <span class="input-group-text">Mínimas</span>
+                              <input type="text" min="0" oninput="validity.valid||(value='');" class="form-control"
+                                id="validationCustom02" formControlName="cuotasMin" required
+                                (change)="esPlanGuardar()" />
+                            </div>
+                          </div>
+
+                          <!-- Campo Cuotas Máximas -->
+                          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2">
+                            <div class="col-3 input-group">
+                              <span class="input-group-text">Máximas</span>
+                              <input type="text" min="0" oninput="validity.valid||(value='');" class="form-control"
+                                id="validationCustom02" formControlName="cuotasMax" required
+                                (change)="esPlanGuardar()" />
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Validaciones Cuotas -->
+                        <div *ngIf="cuotasMax?.invalid && (cuotasMax?.dirty || cuotasMax?.touched)" class="text-danger">
+                          <div *ngIf="cuotasMax?.errors?.['required']">
+                            La cantidad de cuotas máximas es requerida
+                          </div>
+                        </div>
+                        <div *ngIf="cuotasMin?.invalid && (cuotasMin?.dirty || cuotasMin?.touched)" class="text-danger">
+                          <div *ngIf="cuotasMin?.errors?.['required']">
+                            La cantidad de cuotas mínimas es requerida
+                          </div>
+                        </div>
+                        <div *ngIf="comparador(cuotasMax?.value, cuotasMin?.value, 'C')==false" class="text-danger">
+                          Las cuotas máximas deben ser mayores que las cuotas mínimas.
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Campo Monto -->
+              <div class="col-md-12">
+                <div class="form-outline">
+                  <div class="row">
+                    <div class="col-12">
+                      Monto
+                    </div>
+                    <div class="col-sm-12 mb-3 mb-sm-0">
+                      <div class="card">
+                        <div class="card-body row">
+
+                          <!-- Campo Monto Mínimo -->
+                          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2">
+                            <div class="col-3 input-group">
+                              <span class="input-group-text">Mínimo</span>
+                              <input type="text" min="0" oninput="validity.valid||(value='');" separator
+                                class="form-control" formControlName="montoMin" required (change)="esPlanGuardar()" />
+                            </div>
+                          </div>
+
+                          <!-- Campo Monto Máximo -->
+                          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2">
+                            <div class="col-3 input-group">
+                              <span class="input-group-text">Máximo</span>
+                              <input type="text" min="0" oninput="validity.valid||(value='');" separator
+                                class="form-control" formControlName="montoMax" required (change)="esPlanGuardar()" />
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Validaciones Monto -->
+                        <div *ngIf="montoMin?.invalid && (montoMin?.dirty || montoMin?.touched)" class="text-danger">
+                          <div *ngIf="montoMin?.errors?.['required']">
+                            El monto mínimo es requerido.
+                          </div>
+                        </div>
+                        <div *ngIf="montoMax?.invalid && (montoMax?.dirty || montoMax?.touched)" class="text-danger">
+                          <div *ngIf="montoMax?.errors?.['required']">
+                            El monto máximo es requerido.
+                          </div>
+                        </div>
+                        <div *ngIf="comparador(montoMax?.value, montoMin?.value, 'M')==false" class="text-danger">
+                          El monto máximo debe ser mayor que el monto mínimo.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Campo Edad Máxima -->
+              <div class="col-md-12">
+                <br />
+                <div class="form-outline input-group mb-3">
+                  <span class="input-group-text">Edad Máxima</span>
+                  <input type="number" min="0" oninput="validity.valid||(value='');" class="form-control"
+                    formControlName="edadMax" (change)="esPlanGuardar()" />
+                </div>
+
+                <!-- Validaciones Edad Máxima -->
+                <div *ngIf="
+                    edadMax?.invalid && (edadMax?.dirty || edadMax?.touched)
+                  " class="text-danger">
+                </div>
+              </div>
+              <div *ngIf="estaEntre(120, 0, edadMax?.value)==false" class="text-danger">
+                La edad no debe ser mayor a 120 años.
+              </div>
+
+
+              <!-- Campo Cuota Precancelación -->
+              <div class="col-md-12">
+                <div class="form-outline input-group mb-3">
+                  <span class="input-group-text">Cuota de precancelación</span>
+                  <input type="number" min="0" oninput="validity.valid||(value='');" class="form-control"
+                    formControlName="precanCuota" (change)="esPlanGuardar()" />
+                </div>
+              </div>
+
+              <!-- Campo Multa Precancelación -->
+              <div class="col-md-12">
+                <div class="form-outline input-group mb-3">
+                  <span class="input-group-text">Multa de precancelación</span>
+                  <input type="text" min="0" oninput="validity.valid||(value='');" class="form-control"
+                    formControlName="precanMulta" (change)="esPlanGuardar()" />
+                  <span class="input-group-text" title="{{caracteresValidos}}"><svg xmlns="http://www.w3.org/2000/svg"
+                      width="16" height="16" fill="currentColor" class="bi bi-percent" viewBox="0 0 16 16">
+                      <path
+                        d="M13.442 2.558a.625.625 0 0 1 0 .884l-10 10a.625.625 0 1 1-.884-.884l10-10a.625.625 0 0 1 .884 0zM4.5 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm7 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
+                    </svg>
+                  </span>
+                </div>
+
+                <!-- Validaciones Multa Precancelación -->
+                <div *ngIf="precanMulta?.invalid && (precanMulta?.dirty || precanMulta?.touched)" class="text-danger">
+                  <div *ngIf="precanMulta?.errors?.['pattern']">
+                    Solo se permiten números.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Campo Costo Otorgamiento -->
+              <div class="col-md-12">
+                <div class="form-outline input-group mb-3">
+                  <span class="input-group-text">Costo de otorgamiento</span>
+                  <input type="text" min="0" oninput="validity.valid||(value='');" separator class="form-control"
+                    formControlName="costoOtorgamiento" (change)="esPlanGuardar()" />
+                </div>
+
+                <!-- Validaciones Costo Otorgamiento -->
+                <div *ngIf="
+                    costoOtorgamiento?.invalid &&
+                    (costoOtorgamiento?.dirty || costoOtorgamiento?.touched)
+                  " class="text-danger">
+                  <div *ngIf="precanMulta?.errors?.['pattern']">
+                    Solo se permiten números.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Campo Vigencia -->
+              <div class="col-md-12">
+                <div class="form-outline">
+                  <div class="row">
+                    <div class="col-12">
+                      Vigencia
+                    </div>
+                    <div class="col-sm-12 mb-3 mb-sm-0">
+                      <div class="card">
+                        <div class="card-body row">
+
+                          <!-- Campo Vigencia Inicio -->
+                          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2">
+                            <div class="col-3 input-group">
+                              <span class="input-group-text">Inicio</span>
+                              <input type="date" id="date" class="form-control" formControlName="vigenciaDesde"
+                                (change)="esPlanGuardar()" />
+                            </div>
+                          </div>
+
+                          <!-- Campo Vigencia Final -->
+                          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2">
+                            <div class="col-3 input-group">
+                              <span class="input-group-text">Final</span>
+                              <input type="date" id="dateHasta" class="form-control" formControlName="vigenciaHasta"
+                                (change)="esPlanGuardar()" />
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Validaciones Vigencia -->
+                        <div *ngIf="
+                    vigenciaHasta?.invalid &&
+                    (vigenciaHasta?.dirty || vigenciaHasta?.touched)
+                  " class="text-danger">
+                        </div>
+                        <div *ngIf="
+                    vigenciaDesde?.invalid &&
+                    (vigenciaDesde?.dirty || vigenciaDesde?.touched)
+                  " class="text-danger">
+                          <div *ngIf="vigenciaDesde?.errors?.['required']">
+                            La vigencia es requerida
+                          </div>
+                        </div>
+                        <div
+                          *ngIf="comparador(vigenciaHasta?.value,vigenciaDesde?.value, 'F') == false && validarNull(vigenciaHasta?.value) == true"
+                          class="text-danger">
+                          La fecha Inicio no puede ser posterior a la fecha Final.
+                        </div>
+                        <div
+                          *ngIf="esFechaActual(vigenciaHasta?.value) == false && validarNull(vigenciaHasta?.value) == true"
+                          class="text-danger">
+                          La fecha Final no puede ser inferior a la fecha Actual
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12"></div>
+              <div class="col-md-12"></div>
+              <div class="col-md-12"></div>
+              <div class="col-md-12"></div>
+              <div class="col-2"></div>
+              <div class="col-5">
+                <br>
+                <button class="btn btn-danger" type="submit">Cancelar</button>
+              </div>
+              <div class="col-5">
+                <br>
+                <button class="btn text-white" style="background-color: #0e3c53" type="button" data-bs-toggle="modal"
+                  data-bs-target="#staticBackdrop" (click)="datosModalGuardar()" (change)="esPlanGuardar()"
+                  *ngIf="validarFormulario() && comparador(cuotasMax?.value, cuotasMin?.value, 'C') == true && comparador(montoMax?.value, montoMin?.value, 'M') == true && estaEntre(120, 0, edadMax?.value)==true && ((comparador(vigenciaHasta?.value, vigenciaDesde?.value, 'F') == true && esFechaActual(vigenciaHasta?.value)) || (validarNull(vigenciaHasta?.value) == false))">
+                  Confirmar
+                </button>
+              </div>
+
+              <!-- Sección de Confirmación de usuario -->
+              <div *ngIf="existePlan.length == 0">
+                <app-modal [titulo]="'Nuevo Plan'">
+                  <h5>Está seguro que desea registrar el Plan:</h5>
+                  <h6 class="colorLetra">
+                    Con nombre: {{ nombreRegistrado }}
+                    <br />
+                    TNA: {{ TNARegistrado }}
+                    <br />
+                    Fecha desde: {{ vigenciaDesdeRegistrado | date : "dd/MM/yyyy" }}
+                  </h6>
+                  <div class="modal-footer text-center">
+                    <button style="background-color: #0e3c53" type="submit" class="btn text-white"
+                      data-bs-toggle="button" data-bs-dismiss="modal" (click)="confirmarPlan()">
+                      Confirmar
+                    </button>
+                  </div>
+                </app-modal>
+              </div>
+              <div *ngIf="existePlan.length > 0">
+                <app-modal [titulo]="'Aviso'">
+                  <h6 class="colorLetra">
+                    El plan: {{nombreRegistrado}} ya existe.
+                    <br>
+                    Por favor, ingrese otro nombre.
+                  </h6>
+                  <div class="modal-footer text-center">
+                    <button style="background-color: #0e3c53;" type="submit" class="btn text-white"
+                      data-bs-toggle="button" data-bs-dismiss="modal">Volver</button>
+                  </div>
+                </app-modal>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6" *ngIf="modoFormulario=='M'">
+        <h3 class="text-white">Ver más</h3>
+        <div class="card">
+          <div class="card-body">
+            <form [formGroup]="formRegistro" class="row">
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <div class="form-outline input-group mb-3">
+                  <span class="input-group-text">Nombre</span>
+                  <input type="text" class="form-control" formControlName="nombre" required
+                    [ngModel]="planSeleccionado.nombre" (change)="esPlanGuardar()" />
+                  <span class="input-group-text" title="{{caracteresValidos}}"><svg xmlns="http://www.w3.org/2000/svg"
+                      width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                      <path
+                        d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
+                    </svg>
+                  </span>
+                </div>
+                <div *ngIf="nombre?.invalid && (nombre?.dirty || nombre?.touched)" class="text-danger">
+                  <div *ngIf="nombre?.errors?.['required']">
+                    El Nombre es requerido
+                  </div>
+                  <div *ngIf="nombre?.errors?.['pattern']">
+                    La primera letra debe ser mayúscula y no debe contener números ni caracteres especiales.
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-outline input-group mb-3">
+
+                  <span class="input-group-text">TNA</span>
+                  <input type="text" min="0" maxlength="6" oninput="validity.valid||(value='');" class="form-control"
+                    formControlName="TNA" required [ngModel]="planSeleccionado.tna" (change)="esPlanGuardar()" />
+                  <span class="input-group-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-percent" viewBox="0 0 16 16">
+                      <path
+                        d="M13.442 2.558a.625.625 0 0 1 0 .884l-10 10a.625.625 0 1 1-.884-.884l10-10a.625.625 0 0 1 .884 0zM4.5 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm7 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
+                    </svg>
+                  </span>
+                </div>
+                <div *ngIf="TNA?.invalid && (TNA?.dirty || TNA?.touched)" class="text-danger">
+                  <div *ngIf="TNA?.errors?.['required']">
+                    La TNA es requerida
+                  </div>
+                  <div *ngIf="TNA?.errors?.['pattern']">
+                    Solo se permiten números.
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+
+                <div class="form-outline">
+                  <div class="row">
+                    <div class="col-12">
+                      Cuotas
+                    </div>
+                    <div class="col-sm-12 mb-3 mb-sm-0">
+                      <div class="card">
+                        <div class="card-body row">
+                          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2">
+                            <div class="col-3 input-group">
+                              <span class="input-group-text">Mínimas</span>
+                              <input type="text" min="0" oninput="validity.valid||(value='');" class="form-control"
+                                id="validationCustom02" formControlName="cuotasMin" required
+                                [ngModel]="planSeleccionado.cuotasMin" (change)="esPlanGuardar()" />
+                            </div>
+                          </div>
+                          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2">
+                            <div class="col-3 input-group">
+                              <span class="input-group-text">Máximas</span>
+                              <input type="text" min="0" oninput="validity.valid||(value='');" class="form-control"
+                                id="validationCustom02" formControlName="cuotasMax" required
+                                [ngModel]="planSeleccionado.cuotasMax" (change)="esPlanGuardar()" />
+                            </div>
+                          </div>
+                        </div>
+                        <div *ngIf="cuotasMax?.invalid && (cuotasMax?.dirty || cuotasMax?.touched)" class="text-danger">
+                          <div *ngIf="cuotasMax?.errors?.['required']">
+                            La cantidad de cuotas máximas es requerida
+                          </div>
+                        </div>
+                        <div *ngIf="cuotasMin?.invalid && (cuotasMin?.dirty || cuotasMin?.touched)" class="text-danger">
+                          <div *ngIf="cuotasMin?.errors?.['required']">
+                            La cantidad de cuotas mínimas es requerida
+                          </div>
+                        </div>
+                        <div *ngIf="comparador(cuotasMax?.value, cuotasMin?.value, 'C')==false" class="text-danger">
+                          Las cuotas máximas deben ser mayores que las cuotas mínimas.
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+
+                <div class="form-outline">
+                  <div class="row">
+                    <div class="col-12">
+                      Monto
+                    </div>
+                    <div class="col-sm-12 mb-3 mb-sm-0">
+                      <div class="card">
+                        <div class="card-body row">
+                          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2">
+                            <div class="col-3 input-group">
+                              <span class="input-group-text">Mínimo</span>
+                              <input type="text" min="0" oninput="validity.valid||(value='');" separator
+                                class="form-control" formControlName="montoMin" required
+                                [ngModel]="planSeleccionado.montoMin" (change)="esPlanGuardar()" />
+                            </div>
+                          </div>
+                          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2">
+                            <div class="col-3 input-group">
+                              <span class="input-group-text">Máximo</span>
+                              <input type="text" min="0" oninput="validity.valid||(value='');" separator
+                                class="form-control" formControlName="montoMax" required
+                                [ngModel]="planSeleccionado.montoMax" (change)="esPlanGuardar()" />
+                            </div>
+                          </div>
+                        </div>
+                        <div *ngIf="montoMin?.invalid && (montoMin?.dirty || montoMin?.touched)" class="text-danger">
+                          <div *ngIf="montoMin?.errors?.['required']">
+                            El monto mínimo es requerido.
+                          </div>
+                        </div>
+                        <div *ngIf="montoMax?.invalid && (montoMax?.dirty || montoMax?.touched)" class="text-danger">
+                          <div *ngIf="montoMax?.errors?.['required']">
+                            El monto máximo es requerido.
+                          </div>
+                        </div>
+
+                        <div *ngIf="comparador(montoMax?.value, montoMin?.value, 'M')==false" class="text-danger">
+                          El monto máximo debe ser mayor que el monto mínimo.
+                        </div>
+
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+
+
+              <div class="col-md-12">
+                <br />
+                <div class="form-outline input-group mb-3">
+                  <span class="input-group-text">Edad Máxima</span>
+
+                  <input type="number" min="0" oninput="validity.valid||(value='');" class="form-control"
+                    formControlName="edadMax" [ngModel]="planSeleccionado.edadMax" (change)="esPlanGuardar()" />
+                </div>
+                <div *ngIf="
+                    edadMax?.invalid && (edadMax?.dirty || edadMax?.touched)
+                  " class="text-danger">
+                </div>
+                <div *ngIf="estaEntre(120, 0, edadMax?.value)==false" class="text-danger">
+                  La edad no debe ser mayor a 120 años.
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-outline input-group mb-3">
+                  <span class="input-group-text">Cuota de precancelación</span>
+                  <input type="number" min="0" oninput="validity.valid||(value='');" class="form-control"
+                    formControlName="precanCuota" [ngModel]="planSeleccionado.precanCuota" (change)="esPlanGuardar()" />
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-outline input-group mb-3">
+                  <span class="input-group-text">Multa de precancelación</span>
+                  <input type="text" min="0" oninput="validity.valid||(value='');" class="form-control"
+                    formControlName="precanMulta" [ngModel]="planSeleccionado.precanMulta" (change)="esPlanGuardar()" />
+                  <span class="input-group-text" title="{{caracteresValidos}}"><svg xmlns="http://www.w3.org/2000/svg"
+                      width="16" height="16" fill="currentColor" class="bi bi-percent" viewBox="0 0 16 16">
+                      <path
+                        d="M13.442 2.558a.625.625 0 0 1 0 .884l-10 10a.625.625 0 1 1-.884-.884l10-10a.625.625 0 0 1 .884 0zM4.5 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm7 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
+                    </svg>
+                  </span>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-outline input-group mb-3">
+                  <span class="input-group-text">Costo de otorgamiento</span>
+                  <input type="text" min="0" oninput="validity.valid||(value='');" separator class="form-control"
+                    formControlName="costoOtorgamiento" [ngModel]="planSeleccionado.costoOtorgamiento"
+                    (change)="esPlanGuardar()" />
+                </div>
+                <div *ngIf="
+                    costoOtorgamiento?.invalid &&
+                    (costoOtorgamiento?.dirty || costoOtorgamiento?.touched)
+                  " class="text-danger">
+                  <div *ngIf="costoOtorgamiento?.errors?.['required']">
+                    El costo de otorgamiento es requerido
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-outline">
+                  <div class="row">
+                    <div class="col-12">
+                      Vigencia
+                    </div>
+                    <div class="col-sm-12 mb-3 mb-sm-0">
+                      <div class="card">
+                        <div class="card-body row">
+                          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2">
+                            <div class="col-3 input-group">
+                              <span class="input-group-text">Inicio</span>
+                              <input type="date" id="date" class="form-control" formControlName="vigenciaDesde"
+                                [ngModel]="planSeleccionado.vigenciaDesde" (change)="esPlanGuardar()" />
+                            </div>
+                          </div>
+                          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2">
+                            <div class="col-3 input-group">
+                              <span class="input-group-text">Final</span>
+                              <input type="date" id="dateHasta" class="form-control" formControlName="vigenciaHasta"
+                                [ngModel]="planSeleccionado.vigenciaHasta" (change)="esPlanGuardar()" />
+                            </div>
+                          </div>
+                        </div>
+                        <div *ngIf="
+                    vigenciaHasta?.invalid &&
+                    (vigenciaHasta?.dirty || vigenciaHasta?.touched)
+                  " class="text-danger">
+                          <div *ngIf="vigenciaHasta?.errors?.['required']">
+                            La vigencia es requerida
+                          </div>
+                        </div>
+                        <div *ngIf="
+                    vigenciaDesde?.invalid &&
+                    (vigenciaDesde?.dirty || vigenciaDesde?.touched)
+                  " class="text-danger">
+                          <div *ngIf="vigenciaDesde?.errors?.['required']">
+                            La vigencia es requerida
+                          </div>
+                        </div>
+                        <div
+                          *ngIf="comparador(vigenciaHasta?.value,vigenciaDesde?.value, 'F') == false && validarNull(vigenciaHasta?.value) == true"
+                          class="text-danger">
+                          La fecha Inicio no puede ser posterior a la fecha Final.
+                        </div>
+                        <div
+                          *ngIf="esFechaActual(vigenciaHasta?.value) == false && validarNull(vigenciaHasta?.value) == true"
+                          class="text-danger">
+                          La fecha Final no puede ser inferior a la fecha Actual
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="col-md-12"></div>
+              <div class="col-md-12"></div>
+              <div class="col-md-12"></div>
+              <div class="col-md-12"></div>
+              <div class="col-2"></div>
+              <div class="col-2">
+                <br>
+                <button type="submit" name="add_to_cart" id="Validar" class="btn btn-success"
+                  (click)="desbloquearEditar()">Editar
+                </button>
+              </div>
+              <div class="col-4">
+                <br>
+                <button class="btn text-white" style="background-color: #0e3c53" type="button" data-bs-toggle="modal"
+                  data-bs-target="#staticBackdrop" (click)="datosModalGuardar()" (change)="esPlanGuardar()"
+                  *ngIf="validarFormulario() && comparador(cuotasMax?.value, cuotasMin?.value, 'C') == true && comparador(montoMax?.value, montoMin?.value, 'M') == true && estaEntre(120, 0, edadMax?.value)==true && ((comparador(vigenciaHasta?.value, vigenciaDesde?.value, 'F') == true && esFechaActual(vigenciaHasta?.value)) || (validarNull(vigenciaHasta?.value) == false))">
+                  Guardar
+                </button>
+              </div>
+              <div class="col-4">
+                <br>
+                <button class="btn btn-danger text-white" type="button" routerLink="/consultar-plan">
+                  Cancelar
+                </button>
+              </div>
+              <div *ngIf="existePlan.length == 0">
+                <app-modal [titulo]="'Modificación Plan'">
+                  <h5>Está seguro que desea modificar el Plan:</h5>
+                  <h6 class="colorLetra">
+                    Con nombre: {{ nombreRegistrado }}
+                    <br />
+                    TNA: {{ TNARegistrado }}
+                    <br />
+                    Fecha desde: {{ vigenciaDesdeRegistrado | date : "dd/MM/yyyy" }}
+                  </h6>
+                  <div class="modal-footer text-center">
+                    <button style="background-color: #0e3c53" type="submit" class="btn text-white"
+                      data-bs-toggle="button" data-bs-dismiss="modal" (click)="modificarPlan()">
+                      Confirmar
+                    </button>
+                  </div>
+                </app-modal>
+              </div>
+              <div *ngIf="existePlan.length > 0">
+                <app-modal [titulo]="'Aviso'">
+                  <h6 class="colorLetra">
+                    El plan: {{nombreRegistrado}} ya existe.
+                    <br>
+                    Por favor, ingrese otro nombre.
+                  </h6>
+                  <div class="modal-footer text-center">
+                    <button style="background-color: #0e3c53;" type="submit" class="btn text-white"
+                      data-bs-toggle="button" data-bs-dismiss="modal">Volver</button>
+                  </div>
+                </app-modal>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

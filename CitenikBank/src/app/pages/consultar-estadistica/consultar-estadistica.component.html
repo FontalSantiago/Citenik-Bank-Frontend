@@ -1,0 +1,126 @@
+
+<div class="container-fluid">
+    <div class="abs-center">
+        <div class="row">
+            <form class="row g-3">
+
+                <!-- Seccion de Consulta de KPI -->
+                <h3 class="text-white">Panel de indicadores</h3>
+                <div class="row">  
+
+                    <!-- Gráfico de Prestamos Activos por Plan -->
+                    <div class="col-6 p-3">
+                        <div class="card border-light">
+                            <h6 class="card-header text-white bg-dark">Préstamos activos por plan</h6>
+                            <div class="card-body">
+                                <div id="chartdiv"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gráfico de Prestamos Activos por capital-->
+                    <div class="col-6 p-3">
+                        <div class="card border-light">
+                            <h6 class="card-header text-white bg-dark">Préstamos activos por capital</h6>
+                            <div class="card-body">
+                                <div id="chartdiv2"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta de Total de Capital a Recuperar -->
+                    <div class="col-4 p-3">
+                        <div class="card border-success">
+                            <div class="card-header text-success text-center bg-dark">Total de capital a recuperar</div>
+                            <div class="card-body text-center">                   
+                              <h5>${{conceptoCapital | number: '1.2-2':'es-Ar'}}</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta de Total de Interés Financiero a Cobrar -->
+                    <div class="col-4 p-3">
+                        <div class="card border-warning">
+                            <div class="card-header text-warning text-center bg-dark">Total de interés financiero a cobrar</div>
+                            <div class="card-body text-center">
+                              <h5>${{conceptoInteres | number: '1.2-2':'es-Ar'}}</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta de Total de Interés Punitorio Cobrado -->
+                    <div class="col-4 p-3">
+                        <div class="card border-info">
+                            <div class="card-header text-info text-center bg-dark">Total de interés punitorio cobrado histórico</div>
+                            <div class="card-body text-center">
+                                <h5>${{conceptoPunitorio | number: '1.2-2':'es-Ar'}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tabla de Clientes con mayor deuda-->
+                    <div class="col-4 p-3">
+                        <div class="card border-light">
+                            <div class="card-header text-white bg-dark">Clientes con mayor deuda</div>
+                            <div class="card-body">
+                                    <div class="col-12 table-responsive bordered">
+                                        <table class="table table-hover table-bordered text-center mb-0 fondo">
+                                            <thead class="bg-white">
+                                                <tr>
+                                                    <th>Nº</th>
+                                                    <th>Nombre</th>
+                                                    <th>Deuda</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="text-white">
+                                                <tr *ngFor="let cliente of topClientes && topClientes; let i = index">
+                                                    <td class="fondoMonto">{{i+1}}</td>
+                                                    <td class="izquierda"> {{cliente.nombre}}</td>
+                                                    <td class="derecha">${{cliente.deuda | number: '1.2-2':'es-Ar'}}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>   
+                    
+                    <!-- Tabla de Préstamos con mayor rentabilidad -->
+                    <div class="col-8 p-3">
+                        <div class="card border-light">
+                            <div class="card-header text-white bg-dark">Préstamos con mayor rentabilidad</div>
+                            <div class="card-body">
+                                    <div class="col-12 table-responsive bordered">
+                                        <table class="table table-hover table-bordered text-center mb-0 fondo">
+                                            <thead class="bg-white">
+                                                <tr>
+                                                    <th>Nº</th>
+                                                    <th>Préstamo</th>
+                                                    <th>Cliente</th>
+                                                    <th>Plan</th>
+                                                    <th>Fecha Otorgamiento</th>
+                                                    <th>Rentabilidad</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody 
+                                                class="text-white">
+                                                <tr *ngFor="let prestamo of topPrestamos && topPrestamos; let i = index">
+                                                    <td class="fondoMonto"> {{i+1}} </td>
+                                                    <td> {{prestamo.id}}</td>
+                                                    <td>{{prestamo.cuit}}</td>
+                                                    <td class="izquierda"> {{prestamo.nombre}}</td>
+                                                    <td> {{prestamo.fechaOtorgamiento  | date: 'dd/MM/yyyy'}}</td>
+                                                    <td class="derecha"> ${{prestamo.rentabilidad | number: '1.2-2':'es-Ar'}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                            </div>                        
+                        </div>
+                    </div>                
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

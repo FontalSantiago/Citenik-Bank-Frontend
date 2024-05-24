@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/9c3cb906-33bb-454e-a316-917ed2215d1f/resourceGroups/CitenikBank_group/providers/Microsoft.Web/sites/CitenikFront",
+    "appService.deploySubpath": "dist\\citenik-bank"
+}

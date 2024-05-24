@@ -1,0 +1,335 @@
+<div class="container-fluid">
+    <div class="abs-center">
+        <div class="row mx-auto p-2">
+            <form [formGroup]="formRegistro">
+
+                <!-- Sección de Busqueda de Cliente -->
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <h3 class="text-white">Simulacion y alta préstamo</h3>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="col-12">
+                                <div class="col-4">
+                                    <div class="form-outline input-group" data-toggle="tooltip" data-placement="top"
+                                        title="Buscar CUIL">
+                                        <span class="input-group-text">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                            </svg>
+                                        </span>
+
+                                        <!-- CUIT Cliente -->
+                                        <input name="CUIT" type="text" id="CUIT" class="form-control"
+                                            formControlName="CUIT" placeholder="__-________-_"
+                                            [textMask]="{mask: mascaraCUIT}" maxlength="14"
+                                            (keyup)="esFiltrar($event)" />
+                                    </div>
+
+                                    <!-- Validaciones CUIT -->
+                                    <div *ngIf="CUIT?.invalid && (CUIT?.dirty || CUIT?.touched)" class="text-danger">
+                                        <div *ngIf="CUIT?.errors?.['required']">
+                                            El CUIT es requerido
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+
+                                <!-- Datos del Cliente -->
+                                <div class="row p3">
+                                    <div class="col-4">
+
+                                        <!-- Nombre -->
+                                        <div class="form-outline input-group" data-toggle="tooltip" data-placement="top"
+                                            title="">
+                                            <span class="input-group-text">
+                                                Nombre:
+                                            </span>
+                                            <input type="text" class="form-control" formControlName="nombre"
+                                                [ngModel]="ClienteFiltrado.nombre" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+
+                                        <!-- Edad -->
+                                        <div class="form-outline input-group" data-toggle="tooltip" data-placement="top"
+                                            title="">
+                                            <span class="input-group-text">
+                                                Edad:
+                                            </span>
+                                            <input type="text" class="form-control" formControlName="edad"
+                                                [ngModel]="edadCliente" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+
+                                        <!-- Estado -->
+                                        <div class="form-outline input-group" data-toggle="tooltip" data-placement="top"
+                                            title="">
+                                            <span class="input-group-text">
+                                                Estado:
+                                            </span>
+                                            <input type="text" disabled class="form-control" formControlName="estado"
+                                                [ngModel]="estadoCliente">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+
+                <!-- Sección de Seleccion de Plan -->
+                <div *ngIf="validarEdadYEstadoCliente()">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <h3 class="text-white">Seleccione el Plan:</h3>
+                        <div class="row row-cols-3 row-cols-md-3 g-4">
+
+                            <!-- Datos de Planes -->
+                            <div *ngFor="let plan of PlanesFiltrados && PlanesFiltrados">
+                                <div class="col">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="card text-white bg-dark mb-1" style="max-width: 22rem"
+                                                (click)="obtenerDatosPlan(plan)">
+                                                <a>
+                                                    <div class="card-header">
+                                                        <h5>Plan: {{plan.nombre}}</h5>
+                                                    </div>
+                                                    <div class="card-body" id="2">
+                                                        <p class="card-text">Monto: ${{plan.montoMin | number:
+                                                            '1.2-2':'es-Ar'}} a
+                                                            ${{plan.montoMax | number: '1.2-2':'es-Ar'}}</p>
+                                                        <p class="card-text">TNA: {{plan.tna | number:
+                                                            '1.2-2':'es-Ar'}}%
+                                                        </p>
+                                                        <p class="card-text">Cuotas: {{plan.cuotasMin}} a
+                                                            {{plan.cuotasMax}}
+                                                        </p>
+                                                        <p class="card-text">Edad Máxima: {{plan.edadMax}} </p>
+                                                        <p class="card-text">Precancelable en cuota:
+                                                            {{plan.precanCuota}}
+                                                        </p>
+                                                        <p class="card-text">Costo de Otorgamiento:
+                                                            ${{plan.costoOtorgamiento | number:
+                                                            '1.2-2':'es-Ar'}}</p>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="col-12">
+                                    <div class="col-4">
+                                        <div class="form-outline input-group" data-toggle="tooltip" data-placement="top"
+                                            title="">
+                                            <span class="input-group-text">
+                                                Plan Seleccionado:
+                                            </span>
+                                            <input type="text" placeholder="Seleccione un plan" class="form-control"
+                                                [ngModel]="Plan.nombre" *ngIf="Plan != null" formControlName="plan"
+                                                disabled>
+                                        </div>
+
+                                        <!-- Validaciones Planes -->
+
+                                        <div *ngIf="Plan != null" class="text-danger">
+                                            <div *ngIf="plan?.errors?.['required']">
+                                                Debe seleccionar un Plan.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+
+                    <!-- Sección de Registro de alta de préstamo -->
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" hidden="true"
+                        id="seccionAltaPrestamo">
+                        <h3 class="text-white">Ingrese datos del Préstamo</h3>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="col-12">
+                                    <div class="row p3">
+                                        <div class="col-4">
+
+                                            <!-- Fecha Otorgamiento -->
+                                            <div class="form-outline input-group mb-2" id="datepicker">
+                                                <span class="input-group-text">Fecha de Otorgamiento</span>
+                                                <input type="date" id="date" class="form-control"
+                                                    formControlName="fechaOtorgamiento">
+
+                                                <!-- Validaciones Fecha de Otorgamiento -->
+                                                <div *ngIf="fechaOtorgamiento?.invalid && (fechaOtorgamiento?.dirty || fechaOtorgamiento?.touched)"
+                                                    class="text-danger">
+                                                    <div *ngIf="fechaOtorgamiento?.errors?.['required']">
+                                                        La Fecha de Otorgamiento es requerida.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+
+                                            <!-- Capital -->
+                                            <div class="form-outline input-group" data-toggle="tooltip"
+                                                data-placement="top" title="">
+                                                <span class="input-group-text">
+                                                    Capital:
+                                                </span>
+                                                <input type="text" oninput="validity.valid||(value='');" separator
+                                                    placeholder="Ingrese el monto" class="form-control"
+                                                    formControlName="capital">
+                                            </div>
+
+                                            <!-- Validaciones Capital -->
+                                            <div *ngIf="capital?.invalid && (capital?.dirty || capital?.touched)"
+                                                class="text-danger">
+                                                <div *ngIf="capital?.errors?.['required']">
+                                                    El capital es requerido
+                                                </div>
+                                            </div>
+                                            <div *ngIf="estaEntre(Plan.montoMax, Plan.montoMin, capital?.value) == false"
+                                                class="text-danger">
+                                                El capital ingresado no se encuentra dentro del rango establecido.
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+
+                                            <!-- Cantidad de Cuotas -->
+                                            <div class="form-outline input-group" data-toggle="tooltip"
+                                                data-placement="top" title="">
+                                                <span class="input-group-text">
+                                                    Cantidad de cuotas:
+                                                </span>
+                                                <input type="number" placeholder="Ingrese cuotas" class="form-control"
+                                                    formControlName="cantidadCuotas">
+
+                                                <!-- Validaciones Cantidad Cuotas -->
+                                                <div *ngIf="cantidadCuotas?.invalid && (cantidadCuotas?.dirty || cantidadCuotas?.touched)"
+                                                    class="text-danger">
+                                                    <div *ngIf="cantidadCuotas?.errors?.['required']">
+                                                        La cantidad de cuotas es requerida.
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="validarEdadAlFinalizar() == false" class="text-danger">
+                                                    La edad al finalizar el plan supera la edad maxima establecida.
+                                                </div>
+                                                <div *ngIf="estaEntre(Plan.cuotasMax, Plan.cuotasMin, cantidadCuotas?.value) == false"
+                                                    class="text-danger">
+                                                    La cantidad de cuotas debe estar entre el rango establecido en el
+                                                    plan seleccionado.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-3">
+
+                                            <!-- Dia Vencimiento -->
+                                            <div class="input-group mb-3">
+                                                <label class="input-group-text" for="inputGroupSelect01">Día de vencimiento</label>
+                                                <select name="diaVencimiento" id="diaV" class="form-select"
+                                                    formControlName="diaVencimiento">
+                                                    <option value="10">&nbsp;10 &nbsp;</option>
+                                                    <option value="15">&nbsp;15 &nbsp;</option>
+                                                    <option value="20">&nbsp;20 &nbsp;</option>
+                                                </select>
+                                            </div>
+
+                                            <!-- Validaciones Día de Vencimiento -->
+                                            <div *ngIf="diaVencimiento?.invalid && (diaVencimiento?.dirty || diaVencimiento?.touched)"
+                                                class="text-danger">
+                                                <div *ngIf="diaVencimiento?.errors?.['required']">
+                                                    El día de vencimiento es requerido.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Boton Generacion Prestamo -->
+                                        <div class="col-4">
+                                            <button class="btn text-white" id="botonGenerar"
+                                                style="background-color: #0e3c53" type="button"
+                                                (click)="generarSimulacionPrestamo()"
+                                                *ngIf="fechaOtorgamiento?.valid  && capital?.valid  && cantidadCuotas?.valid && diaVencimiento?.valid && estaEntre(Plan.montoMax, Plan.montoMin, capital?.value) == true && validarEdadAlFinalizar() == true && estaEntre(Plan.cuotasMax, Plan.cuotasMin, cantidadCuotas?.value) == true">
+                                                Generar Simulación
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+
+                    <div *ngIf="idPrestamo != null">
+
+                        <!-- Sección de Visualizacion de Cuotas-->
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <h3 class="text-white">Simulación Cuotas</h3>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="col-12 table-responsive">
+                                        <table class="table table-hover text-center mb-0 fondo">
+                                            <thead class="bg-white">
+                                                <tr>
+                                                    <th data-order="desc" data-name="legajo"><a>Cuotas {{('')}}</a></th>
+                                                    <th data-order="desc" data-name="apellido"><a>Monto {{('')}}</a>
+                                                    </th>
+                                                    <th data-order="desc" data-name="cuit"><a>Fecha de Vencimiento
+                                                            {{('')}}</a></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody *ngFor="let cuota of CuotasGeneradas && CuotasGeneradas"
+                                                class="text-white">
+                                                <tr>
+                                                    <td>{{ cuota.nroCuota }}</td>
+                                                    <td class="derecha">{{ cuota.monto | number: '1.2-2':'es-Ar'}}</td>
+                                                    <td>{{ cuota.fechaVen | date: 'dd/MM/yyyy'}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <br>
+                                    <div class="col-12">
+                                        <div class="row p3">
+                                            <div class="col-5"></div>
+                                            <div class="col-5"></div>
+
+                                            <!-- Boton de Confirmacion de Plan -->
+                                            <div class="col-2">
+                                                <button class="btn text-white" style="background-color: #0e3c53"
+                                                    type="button" (click)="confirmarPrestamo()">
+                                                    Confirmar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+
+                <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltrado() == false">
+                    ¡No se ha encontrado ningún Cliente!
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

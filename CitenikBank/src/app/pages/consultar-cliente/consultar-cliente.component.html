@@ -1,0 +1,257 @@
+<div class="container-fluid">
+    <div class="abs-center">
+        <div class="row">
+            <form [formGroup]="formModificar" class="row g-3">
+                <!-- Seccion de Consulta de clientes -->
+                <h3 class="text-white">Consultar cliente</h3>
+
+                <!-- Busqueda de clientes por filtro -->
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">CUIT</span>
+                                        <input type="text" class="form-control" formControlName="CUITConsulta"
+                                            placeholder="__-________-_" [textMask]="{mask: mascaraCUIT}">
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">Nombre Cliente</span>
+                                        <input type="text" class="form-control" formControlName="nombreCliente"
+                                            placeholder="Nombre">
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">Legajo</span>
+                                        <input type="text" class="form-control" formControlName="legajo" separator
+                                            placeholder="Legajo">
+                                    </div>
+                                </div>
+                                <div class="col-2 p-2">
+                                    <button class="btn text-white" id="botonGenerar" style="background-color: #0e3c53"
+                                        type="button"
+                                        (click)="esFiltrar(CUITConsulta?.value, nombreCliente?.value, legajo?.value)">
+                                        Buscar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabla de clientes filtrados -->
+                <div>
+                    <div class="col-12 table-responsive bordered">
+                        <table class="table table-hover table-bordered align-middle mb-0 fondo"
+                            *ngIf="validarFiltrado() == true">
+                            <thead class="bg-white">
+                                <tr>
+                                    <th (click)="ordenarPor('legajo')" [appSort]="ClientesFiltrados" data-order="desc"
+                                        data-name="legajo"><a>Legajo {{ordenarIcono('legajo')}}</a></th>
+                                    <th (click)="ordenarPor('apellido')" [appSort]="ClientesFiltrados" data-order="desc"
+                                        data-name="apellido"><a>Apellido {{ordenarIcono('apellido')}}</a></th>
+                                    <th (click)="ordenarPor('nombre')" [appSort]="ClientesFiltrados" data-order="desc"
+                                        data-name="nombre"><a>Nombre {{ordenarIcono('nombre')}}</a></th>
+                                    <th (click)="ordenarPor('cuit')" [appSort]="ClientesFiltrados" data-order="desc"
+                                        data-name="cuit"><a>CUIT/CUIL {{ordenarIcono('cuit')}}</a></th>
+                                    <th>Desactivar</th>
+                                    <th>Ver Más</th>
+                                </tr>
+                            </thead>
+                            <tbody 
+                                class="text-white">
+                                <tr *ngFor="let cliente of ClientesMultiplesFiltrados | slice: (paginaActual-1) * itemsPorPagina : (paginaActual-1) * itemsPorPagina + itemsPorPagina">
+                                    <td>{{ cliente.legajo }}</td>
+                                    <td>{{ cliente.apellido}}</td>
+                                    <td>{{ cliente.nombre}}</td>
+                                    <td>{{ cliente.cuit}}</td>
+                                    <td>
+                                        <button type="button" class="btn" data-bs-toggle="modal"
+                                            data-bs-target="#staticBackdrop" (click)="esfilaSeleccionada(cliente); abrirModal('Desactivar')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white"
+                                                class="bi bi-trash" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                                <path fill-rule="evenodd"
+                                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                            </svg>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn" data-bs-toggle="modal"
+                                            data-bs-target="#staticBackdrop" (click)="esfilaSeleccionada(cliente); abrirModal('Ver Mas')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white"
+                                                class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                                <path fill-rule="evenodd"
+                                                    d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltrado() == false">
+                        ¡No se ha encontrado ningún cliente!
+                    </div>
+                </div>
+                <!-- Paginación de Tabla -->
+                <nav>
+                    <ul class="pagination">
+                      <li class="page-item" [class.disabled]="paginaActual == 1">
+                        <a class="page-link" (click)="paginaActual = 1">&laquo;</a>
+                      </li>
+                      <li class="page-item" [class.disabled]="paginaActual == 1">
+                        <a class="page-link" (click)="paginaActual = paginaActual - 1">&lsaquo;</a>
+                      </li>
+                      <ng-container *ngFor="let pageNumber of pages.slice(paginaActual - 1, paginaActual + tamanoMaximo - 1)">
+                        <li class="page-item" [class.active]="pageNumber == paginaActual">
+                          <a class="page-link" (click)="paginaActual = pageNumber">{{ pageNumber }}</a>
+                        </li>
+                      </ng-container>
+                      <li class="page-item" [class.disabled]="paginaActual == pages.length">
+                        <a class="page-link" (click)="paginaActual = paginaActual + 1">&rsaquo;</a>
+                      </li>
+                      <li class="page-item" [class.disabled]="paginaActual == pages.length">
+                        <a class="page-link" (click)="paginaActual = pages.length">&raquo;</a>
+                      </li>
+                    </ul>
+                </nav>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<app-modal titulo="{{titulo}}">
+    <!-- Seccion de Modificación de cliente -->
+    <div *ngIf="titulo == 'Ver Mas'">
+        <form [formGroup]="formModificar" class="row g-3">
+            <fieldset id="fieldset">
+                <div class="col-md-12">
+                    <div class="form-outline input-group mb-3">
+                        <span class="input-group-text">Nombre</span>
+                        <input type="text" class="form-control" id="nombre" value="Nombre" formControlName="nombre"
+                            required [(ngModel)]="ClienteSeleccionado.nombre" />
+                        <span class="input-group-text" title="{{caracteresValidos}}"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-question-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                <path
+                                    d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
+                            </svg>
+                        </span>
+                    </div>
+                    <div *ngIf="nombre?.invalid && (nombre?.dirty || nombre?.touched)" class="text-danger">
+                        <div *ngIf="nombre?.errors?.['required']">
+                            El Nombre es requerido
+                        </div>
+                        <div *ngIf="nombre?.errors?.['pattern']">
+                            La primera letra debe ser mayúscula y no debe contener números ni caracteres especiales.
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-outline input-group mb-3">
+                        <span class="input-group-text">Apellido</span>
+                        <input type="text" class="form-control" id="apellido" value="Apellido"
+                            formControlName="apellido" required [(ngModel)]="ClienteSeleccionado.apellido" />
+                        <span class="input-group-text" title="{{caracteresValidos}}"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-question-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                <path
+                                    d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
+                            </svg>
+                        </span>
+                    </div>
+                    <div *ngIf="apellido?.invalid && (apellido?.dirty || apellido?.touched)" class="text-danger">
+                        <div *ngIf="apellido?.errors?.['required']">
+                            El Apellido es requerido
+                        </div>
+                        <div *ngIf="apellido?.errors?.['pattern']">
+                            La primera letra debe ser mayúscula y no debe contener números ni caracteres especiales.
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-outline input-group mb-3">
+                        <span class="input-group-text">CUIT</span>
+                        <input type="text" id="CUIT" class="form-control" placeholder="__-________-_"
+                            [textMask]="{mask: mascaraCUIT}" formControlName="CUIT" maxlength="14"
+                            [(ngModel)]="ClienteSeleccionado.cuit" (keyup)="esClienteAceptar($event)">
+                    </div>
+                    <div *ngIf="CUIT?.invalid && (CUIT?.dirty || CUIT?.touched)" class="text-danger">
+                        <div *ngIf="CUIT?.errors?.['required']">
+                            El CUIT es requerido.
+                        </div>
+                        <div *ngIf="CUIT?.errors?.['pattern']">
+                            El formato del CUIT no es válido.
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-outline input-group mb-3" id="datepicker">
+                        <span class="input-group-text">Fecha Nacimiento</span>
+                        <input type="date" id="datetime" class="form-control" formControlName="fecha_nacimiento"
+                            [(ngModel)]="fechaNacimientoSelec">
+                    </div>
+                    <div *ngIf="fecha_nacimiento?.invalid && (fecha_nacimiento?.dirty || fecha_nacimiento?.touched)"
+                        class="text-danger">
+                        <div *ngIf="fecha_nacimiento?.errors?.['required']">
+                            La Fecha de Nacimiento es requerido
+                        </div>
+                    </div>
+                    <div class="text-danger mb-4" *ngIf="esMayor(fecha_nacimiento?.value) == false">
+                        La Fecha de Nacimiento no puede ser mayor que la fecha actual.
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        <div class="row">
+            <div class="modal-footer text-center col-3">
+                <button type="submit" id="Validar" class="btn btn-success" (click)="desbloquearEditar()">Editar
+                </button>
+            </div>
+            <div class="modal-footer text-center col-8" *ngIf="validarControles() == '1'">
+                <div *ngIf="existeCliente == true" class="text-danger">
+                    El cliente con el CUIT modificado ya existe.
+                </div>
+                <div *ngIf="existeCliente == false">
+                    <button style="background-color: #0e3c53;" id="Aceptar" type="submit" class="btn text-white"
+                        data-bs-toggle="button" data-bs-dismiss="modal"
+                        *ngIf="esCUITCUILValido() && esMayor(fecha_nacimiento?.value) == true"
+                        (click)="modificarCliente('modificar')">Aceptar
+                    </button>
+                </div>
+                <div class="text-danger mb-4" *ngIf="esCUITCUILValido() == false">
+                    El CUIT ingresado no es un CUIT existente.
+                </div>
+            </div>
+            <div *ngIf="validarControles() == '2'" class="text-danger">
+                Verifique los campos ingresados
+            </div>
+        </div>
+    </div>
+
+    <!-- Seccion de Baja de cliente -->
+    <div *ngIf="titulo == 'Desactivar'">
+        <h5>Está seguro que desea dar de baja al cliente:</h5>
+        <h6 class="colorLetra">Legajo: {{ClienteSeleccionado.legajo}}
+            <br>
+            Nombre y Apellido: {{nombreCompletoSelec}}
+            <br>
+            CUIT: {{ClienteSeleccionado.cuit}}
+        </h6>
+        <div class="modal-footer text-center">
+            <button style="background-color: #0e3c53;" type="submit" class="btn text-white" data-bs-toggle="button"
+                data-bs-dismiss="modal" (click)="modificarCliente('desactivar')">Confirmar</button>
+        </div>
+    </div>
+</app-modal>

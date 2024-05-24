@@ -1,0 +1,190 @@
+<div class="container-fluid">
+    <div class="abs-center">
+        <div class="row">
+            <form class="row g-3">
+
+                <!-- Seccion de Consulta de clientes -->
+                <h3 class="text-white">Consultar plan</h3>
+                <div class="row">
+                    <!-- Busqueda de clientes por filtro de texto -->
+                    <form [formGroup]="formConsulta">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text">Plan</span>
+                                                <input type="text" class="form-control" placeholder="Nombre"
+                                                    formControlName="nombre">
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text">TNA</span>
+                                                <input type="text" class="form-control" formControlName="TNA"
+                                                    separator placeholder="TNA">
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text">Edad Máx</span>
+                                                <input type="text" class="form-control" placeholder="Edad Máx"
+                                                    formControlName="edadMax">
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text">Costo Otorgamiento</span>
+                                                <input type="text" class="form-control" placeholder="Costo"
+                                                    formControlName="costoOtorgamiento" separator>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text">Capital $</span>
+                                                <input type="text" class="form-control" formControlName="capital"
+                                                    separator placeholder="Capital">
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text">Cuota</span>
+                                                <input type="text" min="0" class="form-control" formControlName="cuota"
+                                                    separator placeholder="Cuota">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-4">
+                                            <div class="form-outline input-group" data-toggle="tooltip"
+                                                data-placement="top" title="Buscar">
+                                                <div class="form-outline input-group mb-3" id="datepicker">
+                                                    <span class="input-group-text">Fecha</span>
+                                                    <input type="date" id="datetime" formControlName="vigencia"
+                                                        class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row col-12">
+                                    <div class="col-11"></div>
+                                    <div class="col-1 mb-3">
+                                        <button class="btn text-white" id="botonGenerar"
+                                            style="background-color: #0e3c53" type="button"
+                                            (click)="esFiltrar(nombre?.value, TNA?.value, edadMax?.value, costoOtorgamiento?.value, capital?.value, cuota?.value, vigencia?.value)">
+                                            Buscar
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+
+                <!-- Tabla de planes filtrados -->
+                <div>
+                    <div class="col-12 table-responsive bordered">
+                        <table class="table table-hover table-bordered text-center mb-0 fondo"
+                            *ngIf="validarFiltrado() == true">
+                            <thead class="bg-white">
+                                <tr>
+                                    <th (click)="ordenarPor('nombre')" [appSort]="PlanesMultiplesFiltrados"
+                                        data-order="desc" data-name="nombre">Nombre {{ordenarIcono('nombre')}}</th>
+                                    <th (click)="ordenarPor('tna')" [appSort]="PlanesMultiplesFiltrados"
+                                        data-order="desc" data-name="tna">TNA {{ordenarIcono('tna')}}</th>
+                                    <th (click)="ordenarPor('cuotasMin')" [appSort]="PlanesMultiplesFiltrados"
+                                        data-order="desc" data-name="cuotasMin">Cuota Mín {{ordenarIcono('cuotasMin')}}
+                                    </th>
+                                    <th (click)="ordenarPor('cuotasMax')" [appSort]="PlanesMultiplesFiltrados"
+                                        data-order="desc" data-name="cuotasMax">Cuota Máx {{ordenarIcono('cuotasMax')}}
+                                    </th>
+                                    <th (click)="ordenarPor('costoOtorgamiento')" [appSort]="PlanesMultiplesFiltrados"
+                                        data-order="desc" data-name="costoOtorgamiento">Costo
+                                        {{ordenarIcono('costoOtorgamiento')}}</th>
+                                    <th (click)="ordenarPor('montoMin')" [appSort]="PlanesMultiplesFiltrados"
+                                        data-order="desc" data-name="montoMin">Monto Mín {{ordenarIcono('montoMin')}}
+                                    </th>
+                                    <th (click)="ordenarPor('montoMax')" [appSort]="PlanesMultiplesFiltrados"
+                                        data-order="desc" data-name="montoMax">Monto Máx {{ordenarIcono('montoMax')}}
+                                    </th>
+                                    <th (click)="ordenarPor('edadMax')" [appSort]="PlanesMultiplesFiltrados"
+                                        data-order="desc" data-name="edadMax">Edad Máxima {{ordenarIcono('edadMax')}}
+                                    </th>
+                                    <th (click)="ordenarPor('vigenciaDesde')" [appSort]="PlanesMultiplesFiltrados"
+                                        data-order="desc" data-name="vigenciaDesde">Vigencia Desde
+                                        {{ordenarIcono('vigenciaDesde')}}</th>
+                                    <th (click)="ordenarPor('vigenciaHasta')" [appSort]="PlanesMultiplesFiltrados"
+                                        data-order="desc" data-name="vigenciaHasta">Vigencia Hasta
+                                        {{ordenarIcono('legvigenciaHastaajo')}}</th>
+                                    <th>Ver Más</th>
+                                </tr>
+                            </thead>
+                            <tbody 
+                                class="text-white">
+                                <tr *ngFor="let plan of PlanesMultiplesFiltrados && PlanesMultiplesFiltrados | slice: (paginaActual-1) * itemsPorPagina : (paginaActual-1) * itemsPorPagina + itemsPorPagina">
+                                    <td class="izquierda"> {{plan.nombre}}</td>
+                                    <td class="derecha"> {{plan.tna | number: '1.2-2':'es-Ar'}}%</td>
+                                    <td class="derecha"> {{plan.cuotasMin}}&nbsp;</td>
+                                    <td class="derecha">{{plan.cuotasMax}}&nbsp;</td>
+                                    <td class="derecha">${{plan.costoOtorgamiento | number: '1.2-2':'es-Ar'}}</td>
+                                    <td class="derecha">${{plan.montoMin | number: '1.2-2':'es-Ar'}}&nbsp;&nbsp;</td>
+                                    <td class="derecha">${{plan.montoMax | number: '1.2-2':'es-Ar'}}&nbsp;&nbsp;&nbsp;
+                                    </td>
+                                    <td>{{plan.edadMax}}</td>
+                                    <td>{{plan.vigenciaDesde | date: 'dd/MM/yyyy'}}</td>
+                                    <td>{{plan.vigenciaHasta | date: 'dd/MM/yyyy'}}</td>
+                                    <td>
+                                        <button type="button" class="btn"
+                                            (click)="esfilaSeleccionada(plan); enviarDatos()"
+                                            routerLink="/alta-modificacion-plan">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white"
+                                                class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                                <path fill-rule="evenodd"
+                                                    d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                                            </svg>
+                                        </button>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltrado() == false">
+                        ¡No se ha encontrado ningún Plan!
+                    </div>
+                </div>
+                <!-- Paginación de Tabla -->
+                <nav>
+                    <ul class="pagination">
+                      <li class="page-item" [class.disabled]="paginaActual == 1">
+                        <a class="page-link" (click)="paginaActual = 1">&laquo;</a>
+                      </li>
+                      <li class="page-item" [class.disabled]="paginaActual == 1">
+                        <a class="page-link" (click)="paginaActual = paginaActual - 1">&lsaquo;</a>
+                      </li>
+                      <ng-container *ngFor="let pageNumber of pages.slice(paginaActual - 1, paginaActual + tamanoMaximo - 1)">
+                        <li class="page-item" [class.active]="pageNumber == paginaActual">
+                          <a class="page-link" (click)="paginaActual = pageNumber">{{ pageNumber }}</a>
+                        </li>
+                      </ng-container>
+                      <li class="page-item" [class.disabled]="paginaActual == pages.length">
+                        <a class="page-link" (click)="paginaActual = paginaActual + 1">&rsaquo;</a>
+                      </li>
+                      <li class="page-item" [class.disabled]="paginaActual == pages.length">
+                        <a class="page-link" (click)="paginaActual = pages.length">&raquo;</a>
+                      </li>
+                    </ul>
+                </nav>
+            </form>
+        </div>
+    </div>
+</div>

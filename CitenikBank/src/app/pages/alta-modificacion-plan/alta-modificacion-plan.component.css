@@ -1,0 +1,19 @@
+@media screen and (max-width: 762px) {
+    img {
+      width: auto;
+      height: auto;
+      object-fit: cover;
+      object-position: bottom;
+    }
+  }
+  
+  .abs-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+  
+    .colorLetra{
+      color:#d94c10d7;
+    }

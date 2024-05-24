@@ -1,0 +1,162 @@
+<div class="container-fluid">
+    <div class="abs-center">
+        <div class="row">
+            <form class="row g-3">
+
+                <!-- Seccion de Consulta de Préstamo Individual -->
+                <h3 class="text-white">Datos del préstamo</h3>
+
+                <!-- Datos de Préstamo individual -->
+                <form [formGroup]="formConsulta">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row col-12">
+                                    <div class="col-2">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text">ID</span>
+                                            <input type="text" class="form-control" formControlName="idPrestamo"
+                                                [(ngModel)]="PrestamoConsultaSeleccionado.id" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text">Capital<svg
+                                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-currency-dollar"
+                                                    viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M4 10.781c.148 1.667 1.513 2.85 3.591 3.003V15h1.043v-1.216c2.27-.179 3.678-1.438 3.678-3.3 0-1.59-.947-2.51-2.956-3.028l-.722-.187V3.467c1.122.11 1.879.714 2.07 1.616h1.47c-.166-1.6-1.54-2.748-3.54-2.875V1H7.591v1.233c-1.939.23-3.27 1.472-3.27 3.156 0 1.454.966 2.483 2.661 2.917l.61.162v4.031c-1.149-.17-1.94-.8-2.131-1.718H4zm3.391-3.836c-1.043-.263-1.6-.825-1.6-1.616 0-.944.704-1.641 1.8-1.828v3.495l-.2-.05zm1.591 1.872c1.287.323 1.852.859 1.852 1.769 0 1.097-.826 1.828-2.2 1.939V8.73l.348.086z" />
+                                                </svg></span>
+                                            <input type="text" oninput="validity.valid||(value='');" separator
+                                                class="form-control" formControlName="monto"
+                                                [(ngModel)]="PrestamoConsultaSeleccionado.capital" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text">Cuotas</span>
+                                            <input type="text" class="form-control" formControlName="cantidadCuotas"
+                                                [(ngModel)]="PrestamoConsultaSeleccionado.cantidadCuotas" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-outline input-group" data-toggle="tooltip" data-placement="top"
+                                            title="Buscar">
+                                            <div class="form-outline input-group mb-3" id="datepicker">
+                                                <span class="input-group-text">Fecha de Otorgamiento</span>
+                                                <input type="date" id="datetime" class="form-control"
+                                                    formControlName="fechaOtorgamiento"
+                                                    [(ngModel)]="PrestamoConsultaSeleccionado.fechaOtorgamiento"
+                                                    disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" id="datosCuota">
+                                    <div class="col-2">
+                                    </div>
+                                    <div class="col-8">
+                                        <div class="card border-secondary mb-3">
+
+                                            <!-- Datos de la Cuota vencida más antigua asociado al Préstamo -->
+                                            <div class="card-header text-white bg-dark">Datos de Cuota</div>
+                                            <div class="card-body text-primary">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="input-group mb-3">
+                                                            <span class="input-group-text">Nro Cuota</span>
+                                                            <input type="text" class="form-control"
+                                                                formControlName="nroCuota"
+                                                                [(ngModel)]="cuotaVencida.nroCuota" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-outline input-group mb-3" id="datepicker">
+                                                            <span class="input-group-text">Fecha de Vencimiento</span>
+                                                            <input type="date" id="datetime" class="form-control"
+                                                                formControlName="fechaVencimiento"
+                                                                [(ngModel)]="cuotaVencida.fechaVen" disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="form-outline input-group mb-3" id="datepicker">
+                                                            <span class="input-group-text">Fecha de Pago</span>
+                                                            <input type="date" id="datetime" class="form-control"
+                                                                formControlName="fechaPago"
+                                                                [(ngModel)]="cuotaVencida.fechaPago">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="input-group mb-3" id="seccionPagar">
+                                                            <button class="btn text-white" data-bs-toggle="modal"
+                                                                data-bs-target="#staticBackdrop"
+                                                                style="background-color: #0e3c53" type="button"
+                                                                (click)="calcularInteresPunitorio(); obtenerComposicionesCuota()">
+                                                                Recalcular
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class=" col-12 table-responsive bordered">
+                                                    <!-- Tabla de Composiciones de Cuotas del Préstamo a pagar -->
+                                                    <table
+                                                        class="table table-hover table-bordered text-center mb-0 fondo ">
+                                                        <thead class="bg-white">
+                                                            <tr>
+                                                                <th (click)="ordenarPor('nombre')"
+                                                                    [appSort]="ComposicionesCuota" data-order="desc"
+                                                                    data-name="nombre">
+                                                                    Nombre Composición {{ordenarIcono('nombre')}}
+                                                                </th>
+                                                                <th (click)="ordenarPor('monto')"
+                                                                    [appSort]="ComposicionesCuota" data-order="desc"
+                                                                    data-name="monto">
+                                                                    Monto {{ordenarIcono('monto')}}</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody
+                                                            class="text-white">
+                                                            <tr *ngFor="let composicion of ComposicionesCuota && ComposicionesCuota">
+                                                                <td class="izquierda">{{composicion.nombre}}</td>
+                                                                <td class="derecha">
+                                                                    &nbsp;&nbsp;&nbsp;&nbsp;${{composicion.monto |
+                                                                    number:
+                                                                    '1.2-2':'es-Ar'}}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tbody *ngIf="ComposicionesCuota.length > 0">
+                                                            <tr class="fondoMonto">
+                                                                <td class="izquierda">Total: </td>
+                                                                <td class="derecha">
+                                                                    &nbsp;&nbsp;&nbsp;&nbsp;${{cuotaVencida.montoPagar |
+                                                                    number:
+                                                                    '1.2-2':'es-Ar'}}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-10"></div>
+                                    <div class="col-2 p-2" id="botonConfirmar">
+                                        <button class="btn text-white" id="botonConfirmar" (click)="pagarPrestamo()"
+                                            style="background-color: #0e3c53" type="button">
+                                            Confirmar Pago
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </form>
+        </div>
+    </div>
+</div>

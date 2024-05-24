@@ -1,0 +1,223 @@
+<div class="container-fluid">
+    <div class="abs-center">
+        <div class="row">
+            <form class="row g-3">
+
+                <!-- Seccion de Consulta de Préstamo -->
+                <h3 class="text-white">Consultar préstamo</h3>
+                <div class="row">
+
+                    <!-- Busqueda de Préstamos por filtros multiples -->
+                    <form [formGroup]="formConsulta">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text">CUIT</span>
+                                                <input type="text" class="form-control" formControlName="CUIT"
+                                                    placeholder="__-________-_" [textMask]="{mask: mascaraCUIT}">
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="input-group mb-3">
+                                                <label class="input-group-text" for="inputGroupSelect01">Nombre de
+                                                    Plan</label>
+                                                <select class="form-select" name="nombrePlan"
+                                                    formControlName="nombrePlan">
+                                                    <option value=""></option>
+                                                    <option *ngFor="let plan of PlanesListados && PlanesListados">
+                                                        {{plan}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="col-6 card">
+                                            <p class="card-title text-center">Capital</p>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="input-group mb-3">
+                                                        <span class="input-group-text">Mínimo $</span>
+                                                        <input type="text" class="form-control"
+                                                            formControlName="capitalMin" separator placeholder="Mínimo">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="input-group mb-3">
+                                                        <span class="input-group-text">Máximo $</span>
+                                                        <input type="text" class="form-control"
+                                                            formControlName="capitalMax" separator placeholder="Máximo">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 card">
+                                            <p class="card-title text-center">Fecha de Otorgamiento</p>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="form-outline input-group" data-toggle="tooltip"
+                                                        data-placement="top" title="Buscar">
+                                                        <div class="form-outline input-group mb-3" id="datepicker">
+                                                            <span class="input-group-text">Desde</span>
+                                                            <input type="date" id="datetime"
+                                                                formControlName="fechaOtorgamientoDesde"
+                                                                class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-outline input-group" data-toggle="tooltip"
+                                                        data-placement="top" title="Buscar">
+                                                        <div class="form-outline input-group mb-3" id="datepicker">
+                                                            <span class="input-group-text">Hasta</span>
+                                                            <input type="date" id="datetime"
+                                                                formControlName="fechaOtorgamientoHasta"
+                                                                class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 p-3">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input form-control p-2"
+                                                    formControlName="cuotasPagas" type="checkbox" id="inlineCheckbox2"
+                                                    value="option1">
+                                                <label class="form-check-label" for="inlineCheckbox2">Cuotas
+                                                    Pagas</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input form-control p-2"
+                                                    formControlName="cuotasVencidasImpagas" type="checkbox"
+                                                    id="inlineCheckbox3" value="option2">
+                                                <label class="form-check-label" for="inlineCheckbox3">Cuotas Vencidas
+                                                    Impagas</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-5"></div>
+                                        <div class="col-1 p-3">
+                                            <button class="btn text-white" id="botonGenerar"
+                                                style="background-color: #0e3c53" type="button"
+                                                (click)="esFiltrar(CUIT?.value, nombrePlan?.value, capitalMin?.value, capitalMax?.value, fechaOtorgamientoDesde?.value, fechaOtorgamientoHasta?.value, cuotasPagas?.value, cuotasVencidasImpagas?.value)">
+                                                Buscar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <br>
+
+                <!-- Tabla de Préstamos filtrados -->
+                <div>
+                    <div class="col-12 table-responsive bordered" id="tablaPrestamos">
+                        <table class="table table-hover table-bordered text-center mb-0 fondo"
+                            *ngIf="validarFiltrado() == true">
+                            <thead class="bg-white">
+                                <tr>
+                                    <th (click)="ordenarPor('CUIT')" [appSort]="PrestamosMultiplesFiltrados"
+                                        data-order="desc" data-name="CUIT">Cliente {{ordenarIcono('CUIT')}}
+                                    </th>
+                                    <th (click)="ordenarPor('nombre')" [appSort]="PrestamosMultiplesFiltrados"
+                                        data-order="desc" data-name="nombre">Plan {{ordenarIcono('nombre')}}</th>
+                                    <th (click)="ordenarPor('capital')" [appSort]="PrestamosMultiplesFiltrados"
+                                        data-order="desc" data-name="capital">Capital
+                                        {{ordenarIcono('capital')}}</th>
+                                    <th (click)="ordenarPor('cantidadCuotas')" [appSort]="PrestamosMultiplesFiltrados"
+                                        data-order="desc" data-name="cantidadCuotas">Cuotas
+                                        {{ordenarIcono('cantidadCuotas')}}</th>
+                                    <th (click)="ordenarPor('cuotasPagas')" [appSort]="PrestamosMultiplesFiltrados"
+                                        data-order="desc" data-name="cuotasPagas">Pagas {{ordenarIcono('cuotasPagas')}}
+                                    </th>
+                                    <th (click)="ordenarPor('cuotasVencidasImpagas')"
+                                        [appSort]="PrestamosMultiplesFiltrados" data-order="desc"
+                                        data-name="cuotasVencidasImpagas">Vencidas Impagas
+                                        {{ordenarIcono('cuotasVencidasImpagas')}}</th>
+                                    <th (click)="ordenarPor('fechaOtorgamiento')"
+                                        [appSort]="PrestamosMultiplesFiltrados" data-order="desc"
+                                        data-name="fechaOtorgamiento">Fecha Otorgamiento
+                                        {{ordenarIcono('fechaOtorgamiento')}}</th>
+                                    <th>Ver Más</th>
+                                    <th>Pagar</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-white">
+                                <tr
+                                    *ngFor="let prestamoConsulta of PrestamosMultiplesFiltrados && PrestamosMultiplesFiltrados | slice: (paginaActual-1) * itemsPorPagina : (paginaActual-1) * itemsPorPagina + itemsPorPagina">
+                                    <td> {{prestamoConsulta.cuit}}&nbsp;&nbsp;</td>
+                                    <td class="izquierda"> {{prestamoConsulta.nombre}}&nbsp;&nbsp;</td>
+                                    <td class="derecha">${{prestamoConsulta.capital | number: '1.2-2':'es-Ar'}}</td>
+                                    <td class="derecha">{{prestamoConsulta.cantidadCuotas}}</td>
+                                    <td class="derecha">{{prestamoConsulta.cuotasPagas}}&nbsp;&nbsp;</td>
+                                    <td class="derecha">{{prestamoConsulta.cuotasVencidasImpagas}}&nbsp;&nbsp;&nbsp;
+                                    </td>
+                                    <td>{{prestamoConsulta.fechaOtorgamiento | date: 'dd/MM/yyyy'}}</td>
+                                    <td>
+                                        <button type="button" class="btn" routerLink="/consultar-prestamo-individual"
+                                            (click)="esfilaSeleccionada(prestamoConsulta); enviarDatos()">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white"
+                                                class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                                <path fill-rule="evenodd"
+                                                    d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                                            </svg>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn" routerLink="/consultar-pagar-prestamo"
+                                            (click)="esfilaSeleccionada(prestamoConsulta); enviarDatos()"
+                                            *ngIf="validarPago(prestamoConsulta)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white"
+                                                class="bi bi-cash-coin" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd"
+                                                    d="M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0z" />
+                                                <path
+                                                    d="M9.438 11.944c.047.596.518 1.06 1.363 1.116v.44h.375v-.443c.875-.061 1.386-.529 1.386-1.207 0-.618-.39-.936-1.09-1.1l-.296-.07v-1.2c.376.043.614.248.671.532h.658c-.047-.575-.54-1.024-1.329-1.073V8.5h-.375v.45c-.747.073-1.255.522-1.255 1.158 0 .562.378.92 1.007 1.066l.248.061v1.272c-.384-.058-.639-.27-.696-.563h-.668zm1.36-1.354c-.369-.085-.569-.26-.569-.522 0-.294.216-.514.572-.578v1.1h-.003zm.432.746c.449.104.655.272.655.569 0 .339-.257.571-.709.614v-1.195l.054.012z" />
+                                                <path
+                                                    d="M1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.083c.058-.344.145-.678.258-1H3a2 2 0 0 0-2-2V3a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2v3.528c.38.34.717.728 1 1.154V1a1 1 0 0 0-1-1H1z" />
+                                                <path
+                                                    d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 5.982 5.982 0 0 1 3.13-1.567z" />
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltrado() == false">
+                        ¡No se ha encontrado ningún Préstamo!
+                    </div>
+                </div>
+                <!-- Paginación de Tabla -->
+                <nav>
+                    <ul class="pagination">
+                        <li class="page-item" [class.disabled]="paginaActual == 1">
+                            <a class="page-link" (click)="paginaActual = 1">&laquo;</a>
+                        </li>
+                        <li class="page-item" [class.disabled]="paginaActual == 1">
+                            <a class="page-link" (click)="paginaActual = paginaActual - 1">&lsaquo;</a>
+                        </li>
+                        <ng-container
+                            *ngFor="let pageNumber of pages.slice(paginaActual - 1, paginaActual + tamanoMaximo - 1)">
+                            <li class="page-item" [class.active]="pageNumber == paginaActual">
+                                <a class="page-link" (click)="paginaActual = pageNumber">{{ pageNumber }}</a>
+                            </li>
+                        </ng-container>
+                        <li class="page-item" [class.disabled]="paginaActual == pages.length">
+                            <a class="page-link" (click)="paginaActual = paginaActual + 1">&rsaquo;</a>
+                        </li>
+                        <li class="page-item" [class.disabled]="paginaActual == pages.length">
+                            <a class="page-link" (click)="paginaActual = pages.length">&raquo;</a>
+                        </li>
+                    </ul>
+                </nav>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,160 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  }
+
+#chartdiv {
+    width: 100%;
+    height: 500px;
+}
+
+  #chartdiv2 {
+    width: 100%;
+    height: 500px;
+}
+#chartdiv3 {
+  width: 100%;
+  height: 250px;
+}
+#chartdiv4 {
+  width: 100%;
+  height: 250px;
+}
+#chartdiv5 {
+  width: 100%;
+  height: 250px;
+}
+#chartdiv6 {
+  width: 100%;
+  height: 250px;
+}
+#chartdiv7 {
+  width: 100%;
+  height: 250px;
+}
+
+.card{
+    background-color: #f2e8e4b4;
+}
+
+@media screen and (max-width: 550px) {
+  .section{
+   margin:0%;
+   padding: 0%;
+  }
+  #tab, .card-body {
+   margin:0%;
+   padding: 0%;
+   max-width: 250px;
+  }
+
+   th, tr {
+     text-align: center;
+     margin: 0%;
+     padding: 0%;
+     font-size: small;
+   }
+ }
+ @media screen and (max-width: 650px){
+  .date{
+    width: auto;
+    height: auto;
+  }
+  
+ }
+
+.fondo{
+    background-color: #0f425b;
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    background-color: #ffffffba;
+  }
+
+.abs-center {
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 3%;
+  }
+  .abs-center-card {
+    align-items: center;
+    justify-content: center;
+    padding: 3%;
+    background-color: #d94c10d7;
+    
+  }
+  .colorLetraTitulo{
+    color:#f6f2f0;
+  }
+  .colorLetra{
+    color:#d94c10d7;
+  }
+  .izquierda{
+    text-align:left;
+  }
+  .derecha{
+    text-align:right;
+  }
+
+  .bordered { 
+    border: solid #ccc 1px; 
+    -moz-border-radius: 10px; 
+    -webkit-border-radius: 10px; 
+    border-radius: 10px; 
+    -webkit-box-shadow: 0 3px #ccc; 
+    -moz-box-shadow: 0 3px #ccc; 
+    box-shadow: 0 3px #ccc; 
+}
+
+.abs-center {
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 3%;
+}
+a,
+a:hover,
+a:focus{
+color: inherit;
+text-decoration: none;
+transition: all 0.3s;
+}
+
+.card{
+  background-color: #f2e8e4b4;
+}
+
+a:hover {
+  color: #d94c10b4;
+  background: #145474;
+}
+
+.fondo{
+  background-color: #0f425b;
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: #ffffffba;
+}
+
+.izquierda{
+  text-align:left;
+}
+.derecha{
+  text-align:right;
+}
+.medio{
+  text-align: middle;
+}
+.fondoMonto {
+  background-color: #d94c10d7;
+}
+.bordered { 
+  border: solid #ccc 1px; 
+  -moz-border-radius: 10px; 
+  -webkit-border-radius: 10px; 
+  border-radius: 10px; 
+  -webkit-box-shadow: 0 3px #ccc; 
+  -moz-box-shadow: 0 3px #ccc; 
+  box-shadow: 0 3px #ccc; 
+}

@@ -1,0 +1,13 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "start",
+			"path": "CitenikBank",
+			"problemMatcher": [],
+			"label": "npm: start - CitenikBank",
+			"detail": "ng serve"
+		}
+	]
+}
