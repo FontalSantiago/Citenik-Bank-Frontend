@@ -2,12 +2,13 @@
 
 ## Índice
 
+- [Descripción](#descripción)
+- [Funciones](#funciones)
 - [Instalación](#instalación)
 - [Uso](#uso)
 - [Créditos](#créditos)
 - [Licencia](#licencia)
 - [Insignias](#insignias)
-- [Funciones](#funciones)
 
 ## Descripción
 
