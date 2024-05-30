@@ -7,7 +7,7 @@ import { PlanClass } from '../models/plan';
   providedIn: 'root',
 })
 export class PlanService {
-  url: string = 'https://citenikback.azurewebsites.net/api/planes';
+  url: string = 'https://localhost:7106/api/planes';
   planSeleccionado: any;
 
   constructor(private http: HttpClient) {}

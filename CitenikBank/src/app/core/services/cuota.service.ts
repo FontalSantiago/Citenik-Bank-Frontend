@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class CuotaService {
-  url: string = 'https://citenikback.azurewebsites.net/api/prestamo';
+  url: string = 'https://localhost:7106/api/prestamo';
 
   constructor(private http: HttpClient) {}
 

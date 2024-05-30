@@ -8,7 +8,7 @@ import { PrestamoConsultaClass } from '../models/prestamoConsulta';
   providedIn: 'root',
 })
 export class PrestamoService {
-  url: string = 'https://citenikback.azurewebsites.net/api/prestamos';
+  url: string = 'https://localhost:7106/api/prestamos';
 
   prestamoSeleccionado: any;
 

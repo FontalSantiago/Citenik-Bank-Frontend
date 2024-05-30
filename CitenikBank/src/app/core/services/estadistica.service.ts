@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class EstadisticaService {
-  url: string = 'https://citenikback.azurewebsites.net/api/estadisticas';
+  url: string = 'https://localhost:7106/api/estadisticas';
 
   constructor(private http: HttpClient) {}
 

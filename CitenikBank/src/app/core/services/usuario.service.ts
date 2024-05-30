@@ -10,7 +10,7 @@ import * as moment from 'moment';
 })
 export class UsuarioService {
   token: string = '';
-  url: string = 'https://citenikback.azurewebsites.net/usuario';
+  url: string = 'https://localhost:7106/usuario';
 
   constructor(private http: HttpClient) {}
   iniciarSesion(usuario: UsuarioClass): Observable<any> {

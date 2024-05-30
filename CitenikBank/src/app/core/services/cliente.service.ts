@@ -7,7 +7,7 @@ import { ClienteClass } from '../models/cliente';
   providedIn: 'root',
 })
 export class ClienteService {
-  private url: string = 'https://citenikback.azurewebsites.net/api/clientes';
+  private url: string = 'https://localhost:7106/api/clientes';
 
   constructor(private http: HttpClient) {}
 

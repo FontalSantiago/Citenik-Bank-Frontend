@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class PagoService {
-  url: string = 'https://citenikback.azurewebsites.net/api/pagos';
+  url: string = 'https://localhost:7106/api/pagos';
   constructor(private http: HttpClient) {}
 
   obtenerCuotaPagar(idPrestamo: number, fechaPago: string): Observable<any> {
