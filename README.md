@@ -62,13 +62,13 @@ Completados los pasos anteriores, lo único por hacer es levantar el proyecto, p
 > [!NOTE]
 > Existe la posibilidad de que el puerto desde donde queremos consumir las API's no sea el mismo que el que se encuentra publicado en los archivos services, de las respectivas vistas. Para verificar esto, deberemos consultar en Swagger, en que puerto se encuentran corriendo el proyecto de backend. 
 
-> <div align=center>
+<div align=center>
   <img src="assets/images/swaggerPrint.png" alt="drawing" width="500"/>
 </div>
 
->Ya que sabemos el puerto, deberemos dirigirnos a la carpeta app > core > services y dentro de cada uno de los servicios verificar que el puerto sea el correcto.
+Ya que sabemos el puerto, deberemos dirigirnos a la carpeta app > core > services y dentro de cada uno de los servicios verificar que el puerto sea el correcto.
 
-><div align=center>
+<div align=center>
   <img src="assets/images/servicesPrint.png" alt="drawing" width="500"/>
 </div>
 
